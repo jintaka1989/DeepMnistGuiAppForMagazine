@@ -72,7 +72,7 @@ class MainWindow(QtGui.QMainWindow, deep_mnist.Ui_MainWindow):
         for point in view_paint.points_saved:
             self.image[point.x(), point.y()] = 255
 
-        # 上下反転
+        # ここから画像の前処理を行う、上下反転
         self.image = cv2.flip(self.image, 0)
         # 時計回り回転
         self.image = ndimage.rotate(self.image, 270)
@@ -146,22 +146,22 @@ class MainWindow(QtGui.QMainWindow, deep_mnist.Ui_MainWindow):
         print "close..."
         mnist_recognizer.close()
 
-if __name__ == "__main__":
+if __name__ == "__main__": # main.pyがスクリプトとして実行されたときに実行されるブロック
     app = QtGui.QApplication(sys.argv)
-    form = MainWindow()
-    form.show()
-    view_paint = PaintedWidget()
-    view_paint.move(width,height+500)
-    view_paint.setWindowTitle(_translate("", "①数字を書く", None))
-    view_paint.setFixedSize(QSize(360,360))
-    view_result = QWidget()
+    form = MainWindow() # メインウィンドウの定義
+    form.show() # メインウィンドウの表示
+    view_paint = PaintedWidget() # ペイントウィンドウの定義
+    view_paint.move(width,height+500) # ペイントウィンドウの位置を設定
+    view_paint.setWindowTitle(_translate("", "①数字を書く", None)) # ペイントウィンドウのタイトル表示を設定
+    view_paint.setFixedSize(QSize(360,360)) # ペイントウィンドウの大きさを設定,この画面はview_paint.show()が実行されると表示される
+    view_result = QWidget() # 前処理が終わった画像を表示するウィンドウの定義(今回は実装していません)
     view_result.move(width+360,height+500)
     view_result.setWindowTitle(_translate("", "MNIST用画像に変換", None))
     view_result.setFixedSize(QSize(mnist_width,mnist_height))
 
-    form.pushButtonPaintImage.clicked.connect(lambda: form.paint_image())
+    form.pushButtonPaintImage.clicked.connect(lambda: form.paint_image()) # 65行目paint_image()関数と描画画面起動ボタンを結びつける
     form.pushButtonSaveImage.clicked.connect(lambda: form.saved())
-    form.pushButtonRecognizeNumber.clicked.connect(lambda: form.recognize_number())
+    form.pushButtonRecognizeNumber.clicked.connect(lambda: form.recognize_number()) # 92行目recognize_number()関数と数字認識ボタンを結びつける
     form.pushButtonClear.clicked.connect(lambda: form.clear_points())
     form.button_exit.clicked.connect(app.quit)
     form.button_exit.clicked.connect(lambda: form.quit())
