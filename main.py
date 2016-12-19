@@ -95,7 +95,7 @@ class MainWindow(QtGui.QMainWindow, deep_mnist.Ui_MainWindow):
         for point in view_paint.points_saved:
             self.image[point.x(), point.y()] = 255
 
-        # 上下反転
+        # ここから画像の前処理を行う、上下反転
         self.image = cv2.flip(self.image, 0)
         # 時計回り回転
         self.image = ndimage.rotate(self.image, 270)
